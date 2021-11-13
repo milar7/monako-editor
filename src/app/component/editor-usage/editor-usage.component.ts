@@ -14,10 +14,16 @@ import {
 })
 export class EditorUsageComponent   {
 
+
+
   theme = 'vs-dark';
   themes = ['vs', 'vs-dark', 'hc-black'];
   readOnlys = [true, false];
-  options: MonacoEditorConstructionOptions = { theme: 'vs', readOnly: false ,minimap:{enabled:false}};
+  options:
+    MonacoEditorConstructionOptions = {
+    theme: 'vs', readOnly: false ,minimap:{enabled:false}
+
+  };
 
   typescriptCode = `export class Animals {
     private name: string;
