@@ -1,0 +1,35 @@
+<div>
+  <h3 class="mat-title">JSON with validation schema</h3>
+  <form class="editor-wrapper" [formGroup]="reactiveForm">
+    <ngx-monaco-editor
+      formControlName="code"
+      [options]="mergeOptions({ language:'json' })"
+      [uri]="modelUri"
+    >
+    </ngx-monaco-editor>
+  </form>
+  <div>
+    <div>
+      <h4 class="mat-title">Form control</h4>
+      <div>
+        <span>Valid:</span>
+        <span [style.color]="reactiveForm['controls']?.code?.valid ? 'green' : 'red'"
+        >&nbsp;{{ reactiveForm['controls']?.code?.valid }}</span>
+      </div>
+      <div>
+        <span>Touched:</span>
+        <span [style.color]="reactiveForm['controls']?.code?.touched ? 'green' : 'red'"
+        >&nbsp;{{ reactiveForm['controls']?.code?.touched }}</span>
+      </div>
+      <div>
+        <span>Value</span>
+        <pre>{{ reactiveForm.value?.code }}</pre>
+      </div>
+      <div>
+        <span>Errors</span>
+        <pre>{{ reactiveForm['controls']?.code?.errors  | json }}</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
