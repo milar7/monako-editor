@@ -1,5 +1,10 @@
 import {Component} from '@angular/core';
-import {CodeEditorLanguageType, CodeEditorOptions, CodeEditorTheme} from "./component/code-editor/code-editor-configs";
+import {
+  CodeEditorLanguageType,
+  CodeEditorMiniMap,
+  CodeEditorOptions,
+  CodeEditorTheme
+} from "./component/code-editor/code-editor-configs";
 
 @Component({
   selector: 'app-root',
@@ -8,12 +13,12 @@ import {CodeEditorLanguageType, CodeEditorOptions, CodeEditorTheme} from "./comp
 })
 export class AppComponent {
   title = 'monaco';
-  typescriptCode = `
+  pyCode = `
 import banana
 
 class Monkey:
     # Bananas the monkey can eat.
-    capacity = 10
+    capacity = 101
     def eat(self, n):
         """Make the monkey eat n bananas!"""
         self.capacity -= n * banana.size
@@ -26,6 +31,7 @@ class Monkey:
 
   codeEditorOption:CodeEditorOptions={
     language:CodeEditorLanguageType.python,
-    theme:CodeEditorTheme.highContrastDark
+    theme:CodeEditorTheme.highContrastDark,
+    minimap:CodeEditorMiniMap.on
   }
 }

@@ -1,6 +1,10 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
-import {MonacoEditorConstructionOptions, MonacoEditorLoaderService} from "@materia-ui/ngx-monaco-editor";
-import {CodeEditorOptions} from "./code-editor-configs";
+import {
+  MonacoEditorConstructionOptions,
+  MonacoEditorLoaderService,
+  MonacoStandaloneCodeEditor
+} from "@materia-ui/ngx-monaco-editor";
+import {CodeEditorMiniMap, CodeEditorOptions} from "./code-editor-configs";
 import {filter, take} from "rxjs/operators";
 
 @Component({
@@ -18,21 +22,29 @@ export class CodeEditorComponent implements OnChanges{
   defaultOptions: MonacoEditorConstructionOptions = {
     theme: 'vs',
     readOnly: false, minimap: {enabled: false},
-    value: this.value,
-    language:"python"
+    language:"javascript"
   };
   modelUri?: monaco.Uri;
 
 
   constructor(private monacoLoader: MonacoEditorLoaderService) {
-    this.registerJSONValidationSchema();
+    this.compelitionTest();
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    const newOptions:MonacoEditorConstructionOptions={};
+    newOptions.language=this.options?.language
+    newOptions.minimap=this.options?.minimap===CodeEditorMiniMap.on?{enabled:true}:{enabled:false}
+    newOptions.theme=this.options?.theme
+    newOptions.value=this.value
 
+    this.defaultOptions = this.mergeOptions(newOptions);
+    console.log(this.options);
+  }
   mergeOptions(moreOptions?: any) {
     if (!moreOptions) return this.defaultOptions;
     return {
       ...this.defaultOptions,
-      ...moreOptions
+      ...moreOptions,
     }
   }
 
@@ -72,11 +84,7 @@ export class CodeEditorComponent implements OnChanges{
     ];
   }
 
-
-
-
-
-  private async registerJSONValidationSchema() {
+  private async compelitionTest() {
     await this.monacoLoader.isMonacoLoaded$.pipe(filter(isLoaded => isLoaded), take(1)).toPromise();
     monaco.languages.registerCompletionItemProvider('python', {
       provideCompletionItems:  (model, position) =>{
@@ -107,7 +115,10 @@ export class CodeEditorComponent implements OnChanges{
     });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
 
+  init(editor: MonacoStandaloneCodeEditor) {
+    console.log(editor.getOptions());
+    // const options:IEditorOptions;
+    // editor.updateOptions({value:this.value})
   }
 }
