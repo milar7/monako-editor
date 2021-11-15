@@ -20,9 +20,9 @@ export class AppComponent {
   matlabCode:string=CodeExamples.matlabCode
   sqlCode:string=CodeExamples.sqlCode
   suggestions:CodeEditorSuggestion[]=[
-    {key:"{Student",value:"Student",type:CodeEditorSuggestionType.table},
-    {key:"{Id",value:"Id",type:CodeEditorSuggestionType.column},
-    {key:"{Name",value:"Name",type:CodeEditorSuggestionType.column},
+    {key:"Student",value:"Student",type:CodeEditorSuggestionType.table,documentation:"student table"},
+    {key:"Id",value:"Id",type:CodeEditorSuggestionType.column},
+    {key:"Name",value:"Name",type:CodeEditorSuggestionType.column},
 
   ]
 

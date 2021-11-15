@@ -15,14 +15,14 @@
       color: var(--table-color);
       font-family: serif;
       &::before{
-        content: 'T';
+        content: 't';
       }
     }
     .codicon-symbol-class {
       color: var(--column-color);
       font-family: serif;
       &::before{
-        content: 'C';
+        content: 'c';
       }
     }
   }
