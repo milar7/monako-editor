@@ -2,5 +2,6 @@
   [options]="defaultOptions"
   (init)="editorInit($event)"
   [(ngModel)]="value"
+  (ngModelChange)="onCodeChanged($event)"
 >
 </ngx-monaco-editor>

@@ -1,9 +1,10 @@
-import {Component, Input, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
 import {MonacoEditorConstructionOptions, MonacoEditorLoaderService,} from '@materia-ui/ngx-monaco-editor';
 import {CodeEditorOptions} from './models/code-editor-options';
 import {filter, take} from 'rxjs/operators';
 import {CodeEditorMiniMap} from './enums/code-editor-mini-map';
 import {CodeEditorSuggestionType} from "./enums/code-editor-suggestion-type";
+import {MonacoStandaloneCodeEditor} from "@materia-ui/ngx-monaco-editor/lib/interfaces";
 
 @Component({
   selector: 'app-code-editor',
@@ -12,18 +13,36 @@ import {CodeEditorSuggestionType} from "./enums/code-editor-suggestion-type";
 })
 export class CodeEditorComponent {
   @Input() public options?: CodeEditorOptions;
-  @Input() public value?: string = ''; //todo 2way bonding
+  @Input() public value: string = '';
+  @Output() public valueChange:EventEmitter<string>=new EventEmitter<string>();
 
   defaultOptions: MonacoEditorConstructionOptions = {
-    theme: 'vs',
-    readOnly: false,
     minimap: { enabled: false },
-    language: 'javascript',
   };
-  editor:any;
 
   constructor(private monacoLoaderService: MonacoEditorLoaderService) {}
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
+    this.checkRequiredFields(this.options);
+
+    if (this.options?.suggestions) {
+      this.monacoLoaderService.isMonacoLoaded$.pipe(
+        filter(isLoaded => isLoaded),
+        take(1),
+      ).subscribe(() => {
+        this.provideAutoComplete().then()
+      });
+    }
+  }
+  checkRequiredFields(input:any) {
+    if(input === null || input===undefined) {
+      throw new Error("Attribute 'options' is required");
+    }
+  }
+  onCodeChanged(newCode:string) {
+    this.valueChange.emit(newCode)
+  }
+  editorInit(editor:MonacoStandaloneCodeEditor) {
+
     const newOptions: MonacoEditorConstructionOptions = {};
     newOptions.language = this.options?.language;
     newOptions.minimap =
@@ -31,29 +50,16 @@ export class CodeEditorComponent {
         ? { enabled: true }
         : { enabled: false };
 
-
     this.defaultOptions = this.mergeOptions(newOptions);
 
-    if (this.options?.suggestions) {
-      this.monacoLoaderService.isMonacoLoaded$.pipe(
-        filter(isLoaded => isLoaded),
-        take(1),
-      ).subscribe(() => {
-        // here, we retrieve monaco-editor instance
-        this.provideAutoComplete()
-      });
-    }
   }
+
   mergeOptions(moreOptions?: any) {
     if (!moreOptions) return this.defaultOptions;
     return {
       ...this.defaultOptions,
       ...moreOptions,
     };
-  }
-  editorInit(editor:any) {
-    // Here you can access editor instance
-    this.editor = editor;
   }
 
   createDependencyProposals(range: any) :any[]{
