@@ -1,7 +1,42 @@
-<div class="editor-wrapper">
-<app-code-editor [options]="codeEditorOption"
-[(value)]="sqlCode"
->
-</app-code-editor>
-</div>
-<button (click)="onClick()">press</button>
+<fieldset class="editor-wrapper">
+  <legend>SQL</legend>
+  <app-code-editor [options]="sqlEditorOption"
+                   [(value)]="sqlCode"
+  >
+  </app-code-editor>
+</fieldset>
+<fieldset class="editor-wrapper">
+  <legend>C#</legend>
+  <app-code-editor [options]="cSharpEditorOption"
+                   [(value)]="cSharpCode"
+  >
+  </app-code-editor>
+</fieldset>
+<fieldset class="editor-wrapper">
+  <legend>R</legend>
+  <app-code-editor [options]="rEditorOption"
+                   [(value)]="rCode"
+  >
+  </app-code-editor>
+
+</fieldset>
+
+
+<fieldset class="editor-wrapper">
+  <legend>Python</legend>
+  <app-code-editor [options]="pyEditorOption"
+                   [(value)]="pyCode"
+  >
+  </app-code-editor>
+</fieldset>
+
+<fieldset class="editor-wrapper">
+  <legend>Matlab</legend>
+  <app-code-editor [options]="matlabEditorOption"
+                   [(value)]="matlabCode"
+  >
+  </app-code-editor>
+</fieldset>
+
+
+

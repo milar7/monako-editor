@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MonacoEditorConstructionOptions, MonacoEditorLoaderService,} from '@materia-ui/ngx-monaco-editor';
 import {CodeEditorOptions} from './models/code-editor-options';
 import {filter, take} from 'rxjs/operators';
@@ -11,19 +11,30 @@ import {MonacoStandaloneCodeEditor} from "@materia-ui/ngx-monaco-editor/lib/inte
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss'],
 })
-export class CodeEditorComponent {
+export class CodeEditorComponent implements OnChanges,OnInit{
   @Input() public options?: CodeEditorOptions;
   @Input() public value: string = '';
   @Output() public valueChange:EventEmitter<string>=new EventEmitter<string>();
 
   defaultOptions: MonacoEditorConstructionOptions = {
     minimap: { enabled: false },
+    occurrencesHighlight:true
   };
-
+  language:string="";
+  editor?:MonacoStandaloneCodeEditor
   constructor(private monacoLoaderService: MonacoEditorLoaderService) {}
+
   ngOnChanges(): void {
     this.checkRequiredFields(this.options);
-
+  }
+  checkRequiredFields(input:any) {
+    if(input === null || input===undefined) {
+      throw new Error("Attribute 'options' is required");
+    }
+  }
+  ngOnInit(): void {
+    if (this.options)
+    this.language=this.options.language.toString()
     if (this.options?.suggestions) {
       this.monacoLoaderService.isMonacoLoaded$.pipe(
         filter(isLoaded => isLoaded),
@@ -32,17 +43,12 @@ export class CodeEditorComponent {
         this.provideAutoComplete().then()
       });
     }
-  }
-  checkRequiredFields(input:any) {
-    if(input === null || input===undefined) {
-      throw new Error("Attribute 'options' is required");
     }
-  }
   onCodeChanged(newCode:string) {
     this.valueChange.emit(newCode)
   }
   editorInit(editor:MonacoStandaloneCodeEditor) {
-
+  this.editor=editor;
     const newOptions: MonacoEditorConstructionOptions = {};
     newOptions.language = this.options?.language;
     newOptions.minimap =
@@ -52,6 +58,18 @@ export class CodeEditorComponent {
 
     this.defaultOptions = this.mergeOptions(newOptions);
 
+  //todo remove if not needed!
+    editor.addAction({
+      id: 'ctrl-s-id',
+      label: 'onSave',
+      keybindings: [
+        monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S,
+      ],
+      run:  (ed,args) =>{
+        console.log("ctrl + s");
+        return new Promise<void>(resolve => {});
+      }
+    });
   }
 
   mergeOptions(moreOptions?: any) {
@@ -67,8 +85,8 @@ export class CodeEditorComponent {
       return {
       label: suggestion.key,
       kind: suggestion.type===CodeEditorSuggestionType.table
-        ?monaco.languages.CompletionItemKind.Text
-        :monaco.languages.CompletionItemKind.Class,
+        ?monaco.languages.CompletionItemKind.Text //this will change to "T" as table in scss
+        :monaco.languages.CompletionItemKind.Class,//this will change to "C" as column in scss
       documentation: suggestion.documentation?suggestion.documentation:"",
       insertText: suggestion.value,
       range: range,

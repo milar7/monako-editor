@@ -5,21 +5,25 @@
   ngx-monaco-editor {
     height: 100%;
     width: 100%;
-    ::ng-deep {
-      .codicon-symbol-text {
-        color: var(--table-color);
-        font-family: serif;
-        &::before{
-          content: 'T';
-        }
+
+
+  }
+}
+.sql{
+  ::ng-deep {
+    .codicon-symbol-text {
+      color: var(--table-color);
+      font-family: serif;
+      &::before{
+        content: 'T';
       }
+    }
     .codicon-symbol-class {
       color: var(--column-color);
       font-family: serif;
       &::before{
         content: 'C';
       }
-    }
     }
   }
 }

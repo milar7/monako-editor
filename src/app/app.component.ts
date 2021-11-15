@@ -4,6 +4,7 @@ import {CodeEditorLanguage} from "./component/code-editor/enums/code-editor-lang
 import {CodeEditorMiniMap} from "./component/code-editor/enums/code-editor-mini-map";
 import {CodeEditorSuggestion} from "./component/code-editor/models/code-editor-suggestion";
 import {CodeEditorSuggestionType} from "./component/code-editor/enums/code-editor-suggestion-type";
+import {CodeExamples} from "./code-examples";
 
 @Component({
   selector: 'app-root',
@@ -11,39 +12,40 @@ import {CodeEditorSuggestionType} from "./component/code-editor/enums/code-edito
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'monaco';
-  pyCode = `
-import banana
 
-class Monkey:
-    # Bananas the monkey can eat.
-    capacity = 10
-    def eat(self, n):
-        """Make the monkey eat n bananas!"""
-        self.capacity -= n * banana.size
 
-    def feeding_frenzy(self):
-        self.eat(9.25)
-        return "Yum yum"
-
-  `;
-  sqlCode="asas"
-
+  cSharpCode:string=CodeExamples.cSharpCode
+  rCode:string=CodeExamples.rCode
+  pyCode:string=CodeExamples.pyCode
+  matlabCode:string=CodeExamples.matlabCode
+  sqlCode:string=CodeExamples.sqlCode
   suggestions:CodeEditorSuggestion[]=[
-    {key:"aasd",value:"111111111",type:CodeEditorSuggestionType.table},
-    {key:"asdasf",value:"122121212121",type:CodeEditorSuggestionType.column},
-    {key:"aasada",value:"22222222",type:CodeEditorSuggestionType.table},
-
+    {key:"{Student",value:"Student",type:CodeEditorSuggestionType.table},
+    {key:"{Id",value:"Id",type:CodeEditorSuggestionType.column},
+    {key:"{Name",value:"Name",type:CodeEditorSuggestionType.column},
 
   ]
 
-  codeEditorOption:CodeEditorOptions={
+  sqlEditorOption:CodeEditorOptions={
     language:CodeEditorLanguage.sql,
-    minimap:CodeEditorMiniMap.off,
+    minimap:CodeEditorMiniMap.on,
     suggestions:this.suggestions
   }
-
-  onClick() {
-    console.log(this.sqlCode);
+  cSharpEditorOption:CodeEditorOptions={
+    language:CodeEditorLanguage.csharp,
+    minimap:CodeEditorMiniMap.off,
   }
+  rEditorOption:CodeEditorOptions={
+    language:CodeEditorLanguage.r,
+    minimap:CodeEditorMiniMap.on,
+  }
+  pyEditorOption:CodeEditorOptions={
+    language:CodeEditorLanguage.python,
+    minimap:CodeEditorMiniMap.on,
+  }
+  matlabEditorOption:CodeEditorOptions={
+    language:CodeEditorLanguage.matlab,
+    minimap:CodeEditorMiniMap.on,
+  }
+
 }

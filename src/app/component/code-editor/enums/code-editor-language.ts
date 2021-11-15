@@ -1,6 +1,6 @@
 export enum CodeEditorLanguage {
   csharp = "csharp",
-  R = 'r',
+  r = 'r',
   python = "python",
   matlab = "matlab",
   sql="sql"

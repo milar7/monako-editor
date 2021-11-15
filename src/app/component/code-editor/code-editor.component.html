@@ -3,5 +3,6 @@
   (init)="editorInit($event)"
   [(ngModel)]="value"
   (ngModelChange)="onCodeChanged($event)"
+  [ngClass]="language"
 >
 </ngx-monaco-editor>
