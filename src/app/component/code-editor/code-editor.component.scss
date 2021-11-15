@@ -1,4 +1,22 @@
-ngx-monaco-editor{
-  height: 100%;
-  width: 100%;
+:host {
+  ngx-monaco-editor {
+    height: 100%;
+    width: 100%;
+    ::ng-deep {
+      .codicon-symbol-function {
+        color: red;
+        font-family: serif;
+        &::before{
+          content: 'T';
+        }
+      }
+    .codicon-symbol-class {
+      color: red;
+      font-family: serif;
+      &::before{
+        content: 'T';
+      }
+    }
+    }
+  }
 }
