@@ -1,12 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import {
-  MonacoEditorConstructionOptions,
-  MonacoEditorLoaderService,
-  MonacoStandaloneCodeEditor,
-} from '@materia-ui/ngx-monaco-editor';
-import { CodeEditorOptions } from './models/code-editor-options';
-import { filter, take } from 'rxjs/operators';
-import { CodeEditorMiniMap } from './enums/code-editor-mini-map';
+import {Component, Input, SimpleChanges} from '@angular/core';
+import {MonacoEditorConstructionOptions, MonacoEditorLoaderService,} from '@materia-ui/ngx-monaco-editor';
+import {CodeEditorOptions} from './models/code-editor-options';
+import {filter, take} from 'rxjs/operators';
+import {CodeEditorMiniMap} from './enums/code-editor-mini-map';
+import {CodeEditorSuggestionType} from "./enums/code-editor-suggestion-type";
 
 @Component({
   selector: 'app-code-editor',
@@ -23,8 +20,9 @@ export class CodeEditorComponent {
     minimap: { enabled: false },
     language: 'javascript',
   };
+  editor:any;
 
-  constructor(private monacoLoader: MonacoEditorLoaderService) {}
+  constructor(private monacoLoaderService: MonacoEditorLoaderService) {}
   ngOnChanges(changes: SimpleChanges): void {
     const newOptions: MonacoEditorConstructionOptions = {};
     newOptions.language = this.options?.language;
@@ -32,10 +30,19 @@ export class CodeEditorComponent {
       this.options?.minimap === CodeEditorMiniMap.on
         ? { enabled: true }
         : { enabled: false };
-    newOptions.value = this.value;
+
 
     this.defaultOptions = this.mergeOptions(newOptions);
-    if (this.options?.suggestions) this.provideAutoComplete().then();
+
+    if (this.options?.suggestions) {
+      this.monacoLoaderService.isMonacoLoaded$.pipe(
+        filter(isLoaded => isLoaded),
+        take(1),
+      ).subscribe(() => {
+        // here, we retrieve monaco-editor instance
+        this.provideAutoComplete()
+      });
+    }
   }
   mergeOptions(moreOptions?: any) {
     if (!moreOptions) return this.defaultOptions;
@@ -44,26 +51,27 @@ export class CodeEditorComponent {
       ...moreOptions,
     };
   }
+  editorInit(editor:any) {
+    // Here you can access editor instance
+    this.editor = editor;
+  }
 
   createDependencyProposals(range: any) :any[]{
-    return this.options?.suggestions?.map((suggestion, index) => ({
+    return this.options?.suggestions?.map((suggestion) => {
+      return {
       label: suggestion.key,
-      kind: monaco.languages.CompletionItemKind.Class,
-      documentation: suggestion.type,
+      kind: suggestion.type===CodeEditorSuggestionType.table
+        ?monaco.languages.CompletionItemKind.Text
+        :monaco.languages.CompletionItemKind.Class,
+      documentation: suggestion.documentation?suggestion.documentation:"",
       insertText: suggestion.value,
       range: range,
-    })) as any[];
+    }
+    }) as any[];
 
   }
 
   private async provideAutoComplete() {
-    await this.monacoLoader.isMonacoLoaded$
-      .pipe(
-        filter((isLoaded) => isLoaded),
-        take(1)
-      )
-      .toPromise();
-
     let language: string = 'sql';
     if (this.options?.language) language = this.options?.language.toString();
     monaco.languages.registerCompletionItemProvider(language, {

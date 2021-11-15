@@ -1,5 +1,8 @@
+import {CodeEditorSuggestionType} from "../enums/code-editor-suggestion-type";
+
 export interface CodeEditorSuggestion {
   key:string;
   value:string;
-  type:string;//todo enum
+  type:CodeEditorSuggestionType;
+  documentation?:string;
 }

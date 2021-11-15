@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import {
-  CodeEditorOptions,
-} from "./component/code-editor/models/code-editor-options";
+import {CodeEditorOptions,} from "./component/code-editor/models/code-editor-options";
 import {CodeEditorLanguage} from "./component/code-editor/enums/code-editor-language";
 import {CodeEditorMiniMap} from "./component/code-editor/enums/code-editor-mini-map";
 import {CodeEditorSuggestion} from "./component/code-editor/models/code-editor-suggestion";
+import {CodeEditorSuggestionType} from "./component/code-editor/enums/code-editor-suggestion-type";
 
 @Component({
   selector: 'app-root',
@@ -28,48 +27,23 @@ class Monkey:
         return "Yum yum"
 
   `;
-  sqlCode=""
+  sqlCode="asas"
 
   suggestions:CodeEditorSuggestion[]=[
-    {key:"aasd",value:"111111111",type:"type 1"},
-    {key:"asdasf",value:"122121212121",type:"type 2"},
-    {key:"aasada",value:"22222222",type:"type 3"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
-    {key:"asad",value:"333333333",type:"type 4"},
+    {key:"aasd",value:"111111111",type:CodeEditorSuggestionType.table},
+    {key:"asdasf",value:"122121212121",type:CodeEditorSuggestionType.column},
+    {key:"aasada",value:"22222222",type:CodeEditorSuggestionType.table},
+
 
   ]
 
   codeEditorOption:CodeEditorOptions={
-    language:CodeEditorLanguage.python,
-    minimap:CodeEditorMiniMap.on,
+    language:CodeEditorLanguage.sql,
+    minimap:CodeEditorMiniMap.off,
     suggestions:this.suggestions
   }
 
   onClick() {
-    console.log(this.pyCode);
+    console.log(this.sqlCode);
   }
 }

@@ -1,4 +1,6 @@
 <ngx-monaco-editor
   [options]="defaultOptions"
+  (init)="editorInit($event)"
+  [(ngModel)]="value"
 >
 </ngx-monaco-editor>

@@ -1,20 +1,23 @@
 :host {
+  --table-color : hsl(35deg 100% 42%);
+  --column-color :hsl(274deg 52% 37%);
+
   ngx-monaco-editor {
     height: 100%;
     width: 100%;
     ::ng-deep {
-      .codicon-symbol-function {
-        color: red;
+      .codicon-symbol-text {
+        color: var(--table-color);
         font-family: serif;
         &::before{
           content: 'T';
         }
       }
     .codicon-symbol-class {
-      color: red;
+      color: var(--column-color);
       font-family: serif;
       &::before{
-        content: 'T';
+        content: 'C';
       }
     }
     }
