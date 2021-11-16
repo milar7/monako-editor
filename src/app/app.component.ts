@@ -33,11 +33,11 @@ export class AppComponent {
   }
   cSharpEditorOption:CodeEditorOptions={
     language:CodeEditorLanguage.csharp,
-    minimap:CodeEditorMiniMap.off,
+    minimap:CodeEditorMiniMap.on,
   }
   rEditorOption:CodeEditorOptions={
     language:CodeEditorLanguage.r,
-    minimap:CodeEditorMiniMap.on,
+    minimap:CodeEditorMiniMap.off,
   }
   pyEditorOption:CodeEditorOptions={
     language:CodeEditorLanguage.python,

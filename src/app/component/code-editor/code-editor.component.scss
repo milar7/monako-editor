@@ -11,18 +11,18 @@
 }
 .sql{
   ::ng-deep {
-    .codicon-symbol-text {
+    .codicon-issues {
       color: var(--table-color);
       font-family: serif;
       &::before{
-        content: 't';
+        content: 'T';
       }
     }
-    .codicon-symbol-class {
+    .codicon-account {
       color: var(--column-color);
       font-family: serif;
       &::before{
-        content: 'c';
+        content: 'C';
       }
     }
   }
